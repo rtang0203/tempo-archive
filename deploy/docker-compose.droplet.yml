@@ -1,0 +1,42 @@
+# Tempo Atlas on the market-data droplet (138.197.119.94), deployed to /opt/tempo-atlas.
+# Shares Postgres with the market-data stack: database `tempo_atlas` in container crypto_db,
+# reached as host `database` on the market-data-monitor_default network.
+# The droplet has 1 vCPU / 2 GB: every service has a memory cap, and the analyzer gets a low
+# CPU weight so a big import can't starve the market-data collectors.
+
+x-common: &common
+  restart: unless-stopped
+  env_file: .env
+  networks: [market]
+  logging:
+    driver: json-file
+    options: { max-size: "10m", max-file: "3" }
+
+services:
+  web:
+    <<: *common
+    image: tempo-atlas-app:latest
+    ports:
+      - "127.0.0.1:3100:3000"
+    mem_limit: 400m
+    environment:
+      NODE_OPTIONS: --max-old-space-size=256
+
+  worker:
+    <<: *common
+    image: tempo-atlas-app:latest
+    command: ["node", "--import", "tsx", "src/worker/main.ts"]
+    mem_limit: 400m
+    environment:
+      NODE_OPTIONS: --max-old-space-size=192
+
+  analyzer:
+    <<: *common
+    image: tempo-atlas-analyzer:latest
+    mem_limit: 600m
+    cpu_shares: 256
+
+networks:
+  market:
+    name: market-data-monitor_default
+    external: true

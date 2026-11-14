@@ -1,0 +1,11 @@
+.git
+.env
+.next
+node_modules
+spike
+analyzer
+*.pdf
+*.csv
+*.tsbuildinfo
+Tempo Atlas*
+deploy

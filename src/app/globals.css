@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+:root {
+  --bg: #f6f6f4;
+  --panel: #ffffff;
+  --line: #e2e2de;
+  --fg: #18181b;
+  --muted: #6b6b70;
+}
+
+.dark {
+  --bg: #0e0e10;
+  --panel: #17171a;
+  --line: #2a2a2f;
+  --fg: #ececef;
+  --muted: #8e8e96;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
