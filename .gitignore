@@ -7,4 +7,4 @@ node_modules/
 .next/
 *.tsbuildinfo
 analyzer/.pytest_cache/
-PROGRESS.md
+zunc_coded.csv
